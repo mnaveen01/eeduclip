@@ -1,0 +1,6 @@
+{
+  "name": "educlip.",
+  "description": "Computer science career roadmaps for 20+ tech roles, daily tech news, and Google AI Studio companion with instant Gemini cheatsheets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
