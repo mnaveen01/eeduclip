@@ -1,10 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --font-syne: 'Syne', system-ui, sans-serif;
+}
+
 @layer base {
   html, body {
-    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #ffffff;
-    color: #0f172a;
+    font-family: var(--font-syne);
+    background-color: #000000;
+    color: #ffffff;
     scroll-behavior: smooth;
   }
 }
@@ -16,14 +20,20 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
+  background: #333333;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #cbd5e1;
+  background: #555555;
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+  }
 }

@@ -7,10 +7,24 @@ import { SearchModal } from './components/SearchModal';
 import { CSRole, EduclipSession } from './types';
 import { decodeSession } from './utils/sharingEngine';
 import { CS_ROLES } from './data/csRoles';
+import { ToastProvider } from './context/ToastContext';
+import { ProgressProvider } from './context/ProgressContext';
 
-export default function App() {
+function AppContent() {
   const [currentView, setCurrentView] = useState<'home' | 'workspace' | 'watch' | 'news'>('home');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // Global keyboard shortcuts (Ctrl+K or Cmd+K to open search)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Cinema Session State
   const [directCinemaSession, setDirectCinemaSession] = useState<EduclipSession | null>(null);
@@ -120,7 +134,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 flex flex-col selection:bg-slate-900 selection:text-white">
+    <div className="min-h-screen bg-black font-syne text-white flex flex-col selection:bg-white selection:text-black">
       {/* Universal Top Navigation */}
       <Navbar
         currentView={currentView}
@@ -163,33 +177,33 @@ export default function App() {
         onNavigateToAIStudio={() => navigateTo('workspace')}
       />
 
-      {/* Minimal Footer */}
-      <footer className="w-full border-t border-slate-100 bg-white py-12 px-6 sm:px-10">
+      {/* Footer */}
+      <footer className="w-full border-t border-white/10 bg-black py-12 px-6 sm:px-10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center space-x-3">
-            <span className="text-base font-bold tracking-tight text-slate-900">
-              educlip.cs
+            <span className="text-base font-extrabold tracking-tighter text-white" style={{ fontFamily: 'Syne, sans-serif' }}>
+              eduloop
             </span>
-            <span className="text-xs text-slate-400 font-mono">
+            <span className="text-xs text-white/30 font-mono">
               © 2026 • Free Open Curriculum for CS Students
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-xs text-slate-500 font-medium">
-            <button onClick={() => navigateTo('home')} className="hover:text-slate-900">
+          <div className="flex flex-wrap items-center gap-6 text-xs text-white/40 font-medium">
+            <button onClick={() => navigateTo('home')} className="hover:text-white transition-colors">
               20+ Career Tracks
             </button>
-            <a href="#daily-pulse" onClick={() => navigateTo('home')} className="hover:text-slate-900">
+            <a href="#daily-pulse" onClick={() => navigateTo('home')} className="hover:text-white transition-colors">
               Daily Tech News
             </a>
-            <button onClick={() => navigateTo('workspace')} className="hover:text-slate-900">
-              Google AI Studio
+            <button onClick={() => navigateTo('workspace')} className="hover:text-white transition-colors">
+              AI Studio Hub
             </button>
             <a
               href="https://aistudio.google.com"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-slate-900"
+              className="hover:text-white transition-colors"
             >
               aistudio.google.com ↗
             </a>
@@ -197,5 +211,15 @@ export default function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ProgressProvider>
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
+    </ProgressProvider>
   );
 }
